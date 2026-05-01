@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "SmartCacheTenant adds tenant-aware query caching on top of ActiveRecord by storing cached read results in Rails.cache and invalidating them through lightweight version keys."
   spec.homepage = "https://github.com/henriqueshiraishi/ruby-smart_cache_tenant"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.4.5"
+  spec.required_ruby_version = ">= 3.3.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/henriqueshiraishi/ruby-smart_cache_tenant"
