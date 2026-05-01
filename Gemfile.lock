@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    smart_cache_tenant (1.0.0)
+    smart_cache_tenant (2.0.0)
 
 GEM
   remote: https://rubygems.org/
