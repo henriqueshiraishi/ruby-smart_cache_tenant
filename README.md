@@ -257,7 +257,11 @@ This is useful during rollout to confirm which queries are being served from cac
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies.
+
+Run `bin/console` to start an interactive prompt with a minimal Rails + ActiveRecord environment (SQLite in-memory and Rails cache configured). A sample `ConsoleProject` model is available to validate cache behavior quickly.
+
+Run `bundle exec rspec` to execute the automated tests.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rails/railtie'
+
 module SmartCacheTenant
   class Railtie < Rails::Railtie
     initializer 'smart_cache.initialize' do

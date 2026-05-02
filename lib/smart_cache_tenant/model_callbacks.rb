@@ -27,7 +27,11 @@ module SmartCacheTenant
     end
 
     def smart_cache_bump!
-      SmartCacheTenant::VersionStore.bump!(self.class, try(SmartCacheTenant.config.tenant_column))
+      self.class.smart_cache_bump!(try(SmartCacheTenant.config.tenant_column))
+    end
+
+    def smart_cached_version
+      self.class.smart_cached_version(try(SmartCacheTenant.config.tenant_column))
     end
 
     private

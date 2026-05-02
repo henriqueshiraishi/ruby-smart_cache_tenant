@@ -18,15 +18,15 @@ module SmartCacheTenant
 
     def bump_smart_cache_for_class_bulk_write!(attributes)
       return unless try(:smart_cache_enabled?)
-      return if attributes.blank?
+      return if attributes.respond_to?(:empty?) && attributes.empty?
 
       tenant_column = SmartCacheTenant.config.tenant_column
-      tenant_ids = Array(attributes).filter_map do |row|
+      tenant_ids = Array(attributes).map do |row|
         next unless row.respond_to?(:[])
         next if tenant_column.blank?
 
         row[tenant_column] || row[tenant_column.to_sym] || row[tenant_column.to_s]
-      end.compact.uniq
+      end.compact_blank.uniq
 
       if tenant_ids.empty?
         SmartCacheTenant::VersionStore.bump!(self)

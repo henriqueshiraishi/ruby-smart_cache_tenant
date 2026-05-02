@@ -9,10 +9,14 @@ module SmartCacheTenant
 
     def self.bump!(model_klass, tenant_id = nil)
       key = build_key(model_klass, tenant_id)
-      new_version = generate_version
-      Rails.cache.write(key, new_version, expires_in: SmartCacheTenant.config.ttl)
 
-      new_version
+      if SmartCacheTenant.config.tenant_column.present? && tenant_id.blank?
+        Rails.cache.delete_matched("#{key}:*")
+      else
+        new_version = generate_version
+        Rails.cache.write(key, new_version, expires_in: SmartCacheTenant.config.ttl)
+        new_version
+      end
     end
 
     def self.build_key(model_klass, tenant_id = nil)

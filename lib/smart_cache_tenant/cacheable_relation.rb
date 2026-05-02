@@ -55,21 +55,21 @@ module SmartCacheTenant
       end
     end
 
-    def update_all(updates)
-      result = super
-      bump_smart_cache_for_bulk_write!(affected_rows: result)
-      result
-    end
-
     def insert_all(attributes, returning: nil, unique_by: nil, record_timestamps: nil)
       result = super
-      bump_smart_cache_for_bulk_write!(tenant_ids: tenant_ids_from_bulk_attributes(attributes)) if attributes.present?
+      bump_smart_cache_for_class_bulk_write!(attributes: attributes)
       result
     end
 
     def upsert_all(attributes, on_duplicate: :update, update_only: nil, returning: nil, unique_by: nil, record_timestamps: nil)
       result = super
-      bump_smart_cache_for_bulk_write!(tenant_ids: tenant_ids_from_bulk_attributes(attributes)) if attributes.present?
+      bump_smart_cache_for_class_bulk_write!(attributes: attributes)
+      result
+    end
+
+    def update_all(updates)
+      result = super
+      bump_smart_cache_for_class_bulk_write!(affected_rows: result)
       result
     end
 
@@ -160,24 +160,26 @@ module SmartCacheTenant
       nil
     end
 
-    def tenant_ids_from_bulk_attributes(attributes)
+    def resolve_tenant_ids_from_bulk_attributes(attributes)
+      return if attributes.respond_to?(:empty?) && attributes.empty?
+      
       tenant_column = SmartCacheTenant.config.tenant_column
-      return [] if tenant_column.blank?
-
-      Array(attributes).filter_map do |row|
+      Array(attributes).map do |row|
         next unless row.respond_to?(:[])
+        next if tenant_column.blank?
 
         row[tenant_column] || row[tenant_column.to_sym] || row[tenant_column.to_s]
-      end.uniq
+      end.compact_blank.uniq
     end
 
-    def bump_smart_cache_for_bulk_write!(tenant_ids: nil, affected_rows: nil)
+    def bump_smart_cache_for_class_bulk_write!(attributes: nil, affected_rows: nil)
       return unless klass.try(:smart_cache_enabled?)
+      return if attributes.respond_to?(:empty?) && attributes.empty?
       return if affected_rows.respond_to?(:zero?) && affected_rows.zero?
 
-      resolved_tenant_ids = Array(tenant_ids).compact
+      resolved_tenant_ids = Array(resolve_tenant_ids_from_bulk_attributes(attributes)) 
       resolved_tenant_ids << resolve_tenant_id
-      resolved_tenant_ids = resolved_tenant_ids.compact.uniq
+      resolved_tenant_ids = resolved_tenant_ids.compact_blank.uniq
 
       if resolved_tenant_ids.empty?
         SmartCacheTenant::VersionStore.bump!(klass)
