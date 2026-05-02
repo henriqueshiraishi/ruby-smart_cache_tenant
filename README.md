@@ -259,7 +259,7 @@ This is useful during rollout to confirm which queries are being served from cac
 
 After checking out the repo, run `bin/setup` to install dependencies.
 
-Run `bin/console` to start an interactive prompt with a minimal Rails + ActiveRecord environment (SQLite in-memory and Rails cache configured). A sample `ConsoleProject` model is available to validate cache behavior quickly.
+Run `bin/console` to start an interactive prompt with a minimal Rails + ActiveRecord environment (SQLite in-memory and Rails cache configured). A sample `Project` model is available to validate cache behavior quickly.
 
 Run `bundle exec rspec` to execute the automated tests.
 
