@@ -1,6 +1,6 @@
 # SmartCacheTenant
 
-[![Gem Version](https://badge.fury.io/rb/smart_cache_tenant.svg)](https://badge.fury.io/rb/smart_cache_tenant)
+[![Gem Version](https://badge.fury.io/rb/smart_cache_tenant.svg?icon=si%3Arubygems)](https://badge.fury.io/rb/smart_cache_tenant)
 
 SmartCacheTenant adds tenant-aware query caching on top of `ActiveRecord` by storing cached read results in `Rails.cache` and invalidating them through lightweight version keys.
 
