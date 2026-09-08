@@ -12,17 +12,19 @@ on:
 jobs:
   copilot-setup-steps:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
-      - name: Set up Ruby and Bundler
+      - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ".ruby-version"
-          bundler: "2.6.9"
+          ruby-version: .ruby-version
+          bundler-cache: true
 
       - name: Install project dependencies
         run: ./bin/setup
